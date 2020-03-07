@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class DetectText {
 
     @Autowired
     private VertexToPointTranslator vertexToPointTranslator;
+    @Autowired
+    private CropImages cropImages;
+
     private OcrPageDto ocrPageDto = new OcrPageDto();
     private List<StructureDto> structureDtos = new ArrayList<>();
 
@@ -34,9 +38,11 @@ public class DetectText {
         byte[] data = new byte[0];
         data = file.getBytes();
         ByteString imgBytes = ByteString.copyFrom(data);
-
         Image img = Image.newBuilder().setContent(imgBytes).build();
-        Feature feat = Feature.newBuilder().setType(Feature.Type.TEXT_DETECTION).build();
+
+
+
+        Feature feat = Feature.newBuilder().setType(Feature.Type.DOCUMENT_TEXT_DETECTION).build();
         AnnotateImageRequest request =
                 AnnotateImageRequest.newBuilder().addFeatures(feat).setImage(img).build();
         requests.add(request);
@@ -67,5 +73,10 @@ public class DetectText {
         structureDto.setLeftDownVertex(vertexToPointTranslator.vertexToPosition(vertices.get(3)));
         structureDto.setText(text);
         return structureDto;
+    }
+
+    private void cropImage(byte [] bytes){
+       BufferedImage bufferedImage = cropImages.createImageFromBytes(bytes);
+       cropImages.cropImage(bufferedImage, );
     }
 }

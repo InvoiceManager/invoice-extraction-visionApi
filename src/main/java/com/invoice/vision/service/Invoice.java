@@ -1,7 +1,6 @@
 package com.invoice.vision.service;
 
 import com.invoice.vision.dto.OcrPageDto;
-import com.invoice.vision.dto.StructureDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

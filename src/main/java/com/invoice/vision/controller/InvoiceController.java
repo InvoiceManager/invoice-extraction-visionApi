@@ -29,6 +29,13 @@ public class InvoiceController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<OcrPageDto> uploadInvoice(@RequestParam("invoice") MultipartFile invoice) throws Exception {
         return ResponseEntity.ok(invoiceService.detectText(invoice));
+    }
 
+    @RequestMapping(
+            value = "/info",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    private void getInfo(@RequestParam("invoice") MultipartFile invoice) throws Exception {
+        invoiceService.uploadInvoice(invoice);
     }
 }
